@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eeca05b5-3921-4000-9224-b814ebcd5ae4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/data/cebu.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/davao.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/manila.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/whitecloak/ItemSalesModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/cebu.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/cebu.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/whitecloak/ItemSales.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/whitecloak/ItemSales.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -13,6 +12,13 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -65,8 +71,18 @@
       <option name="presentableId" value="Default" />
       <updated>1566885548348</updated>
       <workItem from="1566885554719" duration="1431000" />
-      <workItem from="1566970386567" duration="2740000" />
+      <workItem from="1566970386567" duration="7548000" />
+      <workItem from="1567042483587" duration="4888000" />
+      <workItem from="1567060519922" duration="516000" />
     </task>
+    <task id="LOCAL-00001" summary="Exercise #1">
+      <created>1566976420628</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1566976420628</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -87,5 +103,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Exercise #1" />
+    <option name="LAST_COMMIT_MESSAGE" value="Exercise #1" />
   </component>
 </project>
