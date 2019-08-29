@@ -14,11 +14,20 @@ public class ItemSales {
 
     public static void main(String[] args) throws IOException {
         ItemSales.returnAllItemsSorted();
+
+
+
+
     }
 
     public static void returnAllItemsSorted() throws IOException{
         TreeSet<String> itemsSold = new TreeSet<>();
         Stream<String> cebuCsv = Files.lines(Paths.get("data/cebu.csv"));
+        Stream<String> davaoCsv = Files.lines(Paths.get("data/davao.csv"));
+        Stream<String> manilaCsv = Files.lines(Paths.get("data/manila.csv"));
+
+        Stream<String> allBranches = Stream.concat(cebuCsv, davaoCsv);
+//        allBranches = Stream.concat(allBranches, manilaCsv);
 
         itemsSold = cebuCsv
                 .filter( item -> !item.isBlank())
@@ -34,4 +43,8 @@ public class ItemSales {
 
         itemsSold.forEach(System.out::println);
     }
+
+
+
+
 }
