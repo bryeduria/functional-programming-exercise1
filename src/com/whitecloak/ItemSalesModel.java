@@ -5,16 +5,16 @@ import java.time.LocalDate;
 
 public class ItemSalesModel {
 
-    String itemType;
-    LocalDate orderDate;
-    Integer unitsSold;
-    BigDecimal unitPrice;
+    private String itemType;
+    private LocalDate orderDate;
+    private Integer unitsSold;
+    private BigDecimal unitPrice;
 
     public ItemSalesModel(String itemType, LocalDate orderDate, Integer unitsSold, BigDecimal unitPrice) {
-        this.itemType = itemType;
-        this.orderDate = orderDate;
-        this.unitsSold = unitsSold;
-        this.unitPrice = unitPrice;
+        this.setItemType(itemType);
+        this.setOrderDate(orderDate);
+        this.setUnitsSold(unitsSold);
+        this.setUnitPrice(unitPrice);
     }
 
     public String getItemType() {
@@ -35,4 +35,19 @@ public class ItemSalesModel {
 
     public BigDecimal getProductTotal (Integer unitsSold, BigDecimal unitPrice) { return getUnitPrice().multiply(BigDecimal.valueOf(getUnitsSold())); }
 
+    public void setItemType(String itemType) {
+        this.itemType = itemType;
+    }
+
+    public void setOrderDate(LocalDate orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public void setUnitsSold(Integer unitsSold) {
+        this.unitsSold = unitsSold;
+    }
+
+    public void setUnitPrice(BigDecimal unitPrice) {
+        this.unitPrice = unitPrice;
+    }
 }

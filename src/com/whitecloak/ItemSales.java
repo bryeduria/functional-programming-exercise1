@@ -1,18 +1,17 @@
 package com.whitecloak;
 
+import com.sun.source.tree.Tree;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.cert.CollectionCertStoreParameters;
 import java.time.LocalDate;
-import java.time.chrono.ChronoLocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public class ItemSales {
 
@@ -20,7 +19,11 @@ public class ItemSales {
 //        ItemSales.returnAllItemsSorted();
 //        ItemSales.totalItemsSoldPerBranch();
 //        ItemSales.totalItemsSoldAllBranches();
-        ItemSales.totalItemsSoldFor2016();
+//        ItemSales.totalItemsSoldFor2016();
+        ItemSales.mostSoldItemCebu();
+        ItemSales.mostSoldItemDavao();
+        ItemSales.mostSoldItemManila();
+
 
 
 
@@ -69,7 +72,7 @@ public class ItemSales {
                         LocalDate.parse(item[1], DateTimeFormatter.ofPattern("M/d/yyyy")),
                         Integer.valueOf(item[2]),
                         new BigDecimal(item[3])))
-                .map(item -> item.getProductTotal(item.unitsSold, item.unitPrice))
+                .map(item -> item.getProductTotal(item.getUnitsSold(), item.getUnitPrice()))
                 .reduce(BigDecimal.valueOf(0), BigDecimal::add);
 
         totalItemsSoldDavao = davaoCsv
@@ -80,7 +83,7 @@ public class ItemSales {
                         LocalDate.parse(item[1], DateTimeFormatter.ofPattern("M/d/yyyy")),
                         Integer.valueOf(item[2]),
                         new BigDecimal(item[3])))
-                .map(item -> item.getProductTotal(item.unitsSold, item.unitPrice))
+                .map(item -> item.getProductTotal(item.getUnitsSold(), item.getUnitPrice()))
                 .reduce(BigDecimal.valueOf(0), BigDecimal::add);
 
         totalItemsSoldManila = manilaCsv
@@ -91,7 +94,7 @@ public class ItemSales {
                         LocalDate.parse(item[1], DateTimeFormatter.ofPattern("M/d/yyyy")),
                         Integer.valueOf(item[2]),
                         new BigDecimal(item[3])))
-                .map(item -> item.getProductTotal(item.unitsSold, item.unitPrice))
+                .map(item -> item.getProductTotal(item.getUnitsSold(), item.getUnitPrice()))
                 .reduce(BigDecimal.valueOf(0), BigDecimal::add);
 
         System.out.println("\nTotal Items Sold for Cebu: " +totalItemsSoldCebu);
@@ -118,7 +121,7 @@ public class ItemSales {
                         LocalDate.parse(item[1], DateTimeFormatter.ofPattern("M/d/yyyy")),
                         Integer.valueOf(item[2]),
                         new BigDecimal(item[3])))
-                .map(item -> item.getProductTotal(item.unitsSold, item.unitPrice))
+                .map(item -> item.getProductTotal(item.getUnitsSold(), item.getUnitPrice()))
                 .reduce(BigDecimal.valueOf(0), BigDecimal::add);
 
 
@@ -146,11 +149,70 @@ public class ItemSales {
                         Integer.valueOf(item[2]),
                         new BigDecimal(item[3])))
                 .filter(itemSalesModel -> itemSalesModel.getOrderDate().toString().contains(compareToThisYear))
-                .map(item -> item.getProductTotal(item.unitsSold, item.unitPrice))
+                .map(item -> item.getProductTotal(item.getUnitsSold(), item.getUnitPrice()))
                 .reduce(BigDecimal.valueOf(0), BigDecimal::add);
 
 
         System.out.println("\nTotal of amount of items sold in "+compareToThisYear+": ");
         System.out.println(totalSalesFor2016);
     }
+
+    public static void mostSoldItemCebu()throws IOException{
+        String mostSoldItemCebu;
+        Stream<String> cebuCsv = Files.lines(Paths.get("data/cebu.csv"));
+
+        mostSoldItemCebu = cebuCsv
+                .filter( item -> !item.isBlank())
+                .map( item -> item.split(","))
+                .map( item -> new ItemSalesModel(
+                        String.valueOf(item[0]),
+                        LocalDate.parse(item[1], DateTimeFormatter.ofPattern("M/d/yyyy")),
+                        Integer.valueOf(item[2]),
+                        new BigDecimal(item[3])))
+                .collect(Collectors.collectingAndThen(Collectors.groupingBy(ItemSalesModel::getItemType,
+                        Collectors.summingInt(ItemSalesModel::getUnitsSold)),
+                        map -> map.entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey()));
+
+        System.out.println("\nMost sold item in Cebu: " +mostSoldItemCebu);
+    }
+
+    public static void mostSoldItemDavao()throws IOException{
+        String mostSoldItemDavao;
+        Stream<String> davaoCsv = Files.lines(Paths.get("data/davao.csv"));
+
+        mostSoldItemDavao = davaoCsv
+                .filter( item -> !item.isBlank())
+                .map( item -> item.split(","))
+                .map( item -> new ItemSalesModel(
+                        String.valueOf(item[0]),
+                        LocalDate.parse(item[1], DateTimeFormatter.ofPattern("M/d/yyyy")),
+                        Integer.valueOf(item[2]),
+                        new BigDecimal(item[3])))
+                .collect(Collectors.collectingAndThen(Collectors.groupingBy(ItemSalesModel::getItemType,
+                        Collectors.summingInt(ItemSalesModel::getUnitsSold)),
+                        map -> map.entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey()));
+
+        System.out.println("\nMost sold item in Davao: " +mostSoldItemDavao);
+    }
+
+    public static void mostSoldItemManila()throws IOException{
+        String mostSoldItemManila;
+        Stream<String> manilaCsv = Files.lines(Paths.get("data/manila.csv"));
+
+        mostSoldItemManila = manilaCsv
+                .filter( item -> !item.isBlank())
+                .map( item -> item.split(","))
+                .map( item -> new ItemSalesModel(
+                        String.valueOf(item[0]),
+                        LocalDate.parse(item[1], DateTimeFormatter.ofPattern("M/d/yyyy")),
+                        Integer.valueOf(item[2]),
+                        new BigDecimal(item[3])))
+                .collect(Collectors.collectingAndThen(Collectors.groupingBy(ItemSalesModel::getItemType,
+                        Collectors.summingInt(ItemSalesModel::getUnitsSold)),
+                        map -> map.entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey()));
+
+        System.out.println("\nMost sold item in Manila: " +mostSoldItemManila);
+    }
+
+
 }
