@@ -1,17 +1,15 @@
 package com.whitecloak;
 
-import com.sun.source.tree.Tree;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 public class ItemSales {
 
@@ -20,12 +18,10 @@ public class ItemSales {
 //        ItemSales.totalItemsSoldPerBranch();
 //        ItemSales.totalItemsSoldAllBranches();
 //        ItemSales.totalItemsSoldFor2016();
-        ItemSales.mostSoldItemCebu();
-        ItemSales.mostSoldItemDavao();
-        ItemSales.mostSoldItemManila();
-
-
-
+//        ItemSales.mostSoldItemCebu();
+//        ItemSales.mostSoldItemDavao();
+//        ItemSales.mostSoldItemManila();
+        ItemSales.monthOfMostNumberOfSales();
 
     }
 
@@ -212,6 +208,32 @@ public class ItemSales {
                         map -> map.entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey()));
 
         System.out.println("\nMost sold item in Manila: " +mostSoldItemManila);
+    }
+
+    public static void monthOfMostNumberOfSales() throws IOException {
+        String month;
+        Stream<String> allBranches;
+        Stream<String> manilaCsv = Files.lines(Paths.get("data/manila.csv"));
+        Stream<String> cebuCsv = Files.lines(Paths.get("data/cebu.csv"));
+        Stream<String> davaoCsv = Files.lines(Paths.get("data/davao.csv"));
+
+        allBranches = Stream.concat(cebuCsv, davaoCsv);
+        allBranches = Stream.concat(allBranches, manilaCsv);
+
+        month = allBranches
+                .filter( item -> !item.isBlank())
+                .map( item -> item.split(","))
+                .map( item -> new ItemSalesModel(
+                        String.valueOf(item[0]),
+                        LocalDate.parse(item[1], DateTimeFormatter.ofPattern("M/d/yyyy")),
+                        Integer.valueOf(item[2]),
+                        new BigDecimal(item[3])))
+                .collect(Collectors.collectingAndThen(Collectors.groupingBy(itemSalesModel -> itemSalesModel.getOrderDate().toString().split("-")[1],
+                        Collectors.summingInt(ItemSalesModel::getUnitsSold)),
+                        map -> map.entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey()));
+
+        System.out.println("\nDate: " + Month.of(Integer.parseInt(month)));
+
     }
 
 
