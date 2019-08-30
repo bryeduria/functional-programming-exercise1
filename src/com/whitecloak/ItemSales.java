@@ -27,9 +27,9 @@ public class ItemSales {
         Stream<String> manilaCsv = Files.lines(Paths.get("data/manila.csv"));
 
         Stream<String> allBranches = Stream.concat(cebuCsv, davaoCsv);
-//        allBranches = Stream.concat(allBranches, manilaCsv);
+        allBranches = Stream.concat(allBranches, manilaCsv);
 
-        itemsSold = cebuCsv
+        itemsSold = allBranches
                 .filter( item -> !item.isBlank())
                 .map( item -> item.split(","))
                 .map( item -> new ItemSalesModel(
