@@ -33,4 +33,6 @@ public class ItemSalesModel {
         return unitPrice;
     }
 
+    public BigDecimal getProductTotal (Integer unitsSold, BigDecimal unitPrice) { return getUnitPrice().multiply(BigDecimal.valueOf(getUnitsSold())); }
+
 }

@@ -4,7 +4,9 @@
     <list default="true" id="eeca05b5-3921-4000-9224-b814ebcd5ae4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Functional Programming/com/whitecloak/ItemSales.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Functional Programming/com/whitecloak/ItemSales.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Functional Programming/com/whitecloak/ItemSalesModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Functional Programming/com/whitecloak/ItemSalesModel.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/whitecloak/ItemSales.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/whitecloak/ItemSales.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/whitecloak/ItemSalesModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/whitecloak/ItemSalesModel.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -74,7 +76,7 @@
       <workItem from="1567042483587" duration="4888000" />
       <workItem from="1567060519922" duration="2002000" />
       <workItem from="1567073786548" duration="923000" />
-      <workItem from="1567123231137" duration="161000" />
+      <workItem from="1567123231137" duration="12051000" />
     </task>
     <task id="LOCAL-00001" summary="Exercise #1">
       <created>1566976420628</created>
