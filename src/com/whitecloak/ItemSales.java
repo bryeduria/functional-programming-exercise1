@@ -14,15 +14,18 @@ import java.util.stream.Stream;
 public class ItemSales {
 
     public static void main(String[] args) throws IOException {
-//        ItemSales.returnAllItemsSorted();
-//        ItemSales.totalItemsSoldPerBranch();
-//        ItemSales.totalItemsSoldAllBranches();
-//        ItemSales.totalItemsSoldFor2016();
-//        ItemSales.mostSoldItemCebu();
-//        ItemSales.mostSoldItemDavao();
-//        ItemSales.mostSoldItemManila();
-//        ItemSales.monthOfMostNumberOfSales();
+        ItemSales.returnAllItemsSorted();
+        ItemSales.totalSalesPerBranch();
+        ItemSales.totalItemsSoldAllBranches();
+        ItemSales.totalItemsSoldFor2016();
+        ItemSales.monthTheFruitsAreSoldMost();
         ItemSales.mostSoldItem2012();
+        ItemSales.monthOfMostNumberOfSales();
+        ItemSales.mostSoldItemManila();
+        ItemSales.mostSoldItemCebu();
+        ItemSales.mostSoldItemDavao();
+
+
 
     }
 
@@ -50,7 +53,7 @@ public class ItemSales {
         itemsSold.forEach(System.out::println);
     }
 
-    public static void totalItemsSoldPerBranch()throws IOException{
+    public static void totalSalesPerBranch()throws IOException{
 
         Stream<String> cebuCsv = Files.lines(Paths.get("data/cebu.csv"));
         Stream<String> davaoCsv = Files.lines(Paths.get("data/davao.csv"));
@@ -264,6 +267,34 @@ public class ItemSales {
 
         System.out.println("\nMost selling item in the year "+compareToThisYear+": ");
         System.out.println(bestSellingProduct2012);
+    }
+
+    public static void monthTheFruitsAreSoldMost() throws IOException {
+
+        String bestSellingMonth;
+        Stream<String> cebuCsv = Files.lines(Paths.get("data/cebu.csv"));
+        Stream<String> davaoCsv = Files.lines(Paths.get("data/davao.csv"));
+        Stream<String> manilaCsv = Files.lines(Paths.get("data/manila.csv"));
+
+        Stream<String> allBranches = Stream.concat(cebuCsv, davaoCsv);
+        allBranches = Stream.concat(allBranches, manilaCsv);
+
+        bestSellingMonth = allBranches
+                .filter( item -> !item.isBlank())
+                .map( item -> item.split(","))
+                .map( item -> new ItemSalesModel(
+                        String.valueOf(item[0]),
+                        LocalDate.parse(item[1], DateTimeFormatter.ofPattern("M/d/yyyy")),
+                        Integer.valueOf(item[2]),
+                        new BigDecimal(item[3])))
+                .filter(itemSalesModel -> itemSalesModel.getItemType().equals("Fruits"))
+                .collect(Collectors.collectingAndThen(Collectors.groupingBy(itemSalesModel -> itemSalesModel.getOrderDate().toString().split("-")[1],
+                        Collectors.summingInt(ItemSalesModel::getUnitsSold)),
+                        map -> map.entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey()));
+
+
+        System.out.println("\nFruits are best sold in the month of: ");
+        System.out.println(Month.of(Integer.valueOf(bestSellingMonth)));
     }
 
 
