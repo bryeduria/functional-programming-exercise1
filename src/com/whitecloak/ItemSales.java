@@ -21,7 +21,8 @@ public class ItemSales {
 //        ItemSales.mostSoldItemCebu();
 //        ItemSales.mostSoldItemDavao();
 //        ItemSales.mostSoldItemManila();
-        ItemSales.monthOfMostNumberOfSales();
+//        ItemSales.monthOfMostNumberOfSales();
+        ItemSales.mostSoldItem2012();
 
     }
 
@@ -234,6 +235,35 @@ public class ItemSales {
 
         System.out.println("\nDate: " + Month.of(Integer.parseInt(month)));
 
+    }
+
+    public static void mostSoldItem2012() throws IOException {
+        String compareToThisYear = "2012";
+
+        String bestSellingProduct2012;
+        Stream<String> cebuCsv = Files.lines(Paths.get("data/cebu.csv"));
+        Stream<String> davaoCsv = Files.lines(Paths.get("data/davao.csv"));
+        Stream<String> manilaCsv = Files.lines(Paths.get("data/manila.csv"));
+
+        Stream<String> allBranches = Stream.concat(cebuCsv, davaoCsv);
+        allBranches = Stream.concat(allBranches, manilaCsv);
+
+        bestSellingProduct2012 = allBranches
+                .filter( item -> !item.isBlank())
+                .map( item -> item.split(","))
+                .map( item -> new ItemSalesModel(
+                        String.valueOf(item[0]),
+                        LocalDate.parse(item[1], DateTimeFormatter.ofPattern("M/d/yyyy")),
+                        Integer.valueOf(item[2]),
+                        new BigDecimal(item[3])))
+                .filter(itemSalesModel -> itemSalesModel.getOrderDate().toString().contains(compareToThisYear))
+                .collect(Collectors.collectingAndThen(Collectors.groupingBy(ItemSalesModel::getItemType,
+                        Collectors.summingInt(ItemSalesModel::getUnitsSold)),
+                        map -> map.entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey()));
+
+
+        System.out.println("\nMost selling item in the year "+compareToThisYear+": ");
+        System.out.println(bestSellingProduct2012);
     }
 
 
